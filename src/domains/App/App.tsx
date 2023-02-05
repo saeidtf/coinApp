@@ -1,4 +1,5 @@
 import { Layout as DefaultLayout } from '@/layout'
+import { LanguageProvider } from '@/providers/LanguageProvider'
 import { store } from '@/redux/store'
 import MaterialProvider, { CustomStyledProvider } from '@/theme/MaterialProvider'
 import createCache from '@emotion/cache'
@@ -24,20 +25,22 @@ const App: React.FC<AppProps> = ({ Component, pageProps }: any) => {
 
   return (
     <Provider store={store}>
-      <MaterialProvider>
-        <CustomStyledProvider cache={clientSideEmotionCache}>
-          <Head>
-            <meta charSet="utf-8" />
-            <meta
-              name="viewport"
-              content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-            />
-          </Head>
-          <Layout {...pageProps}>
-            <Component {...pageProps} />
-          </Layout>
-        </CustomStyledProvider>
-      </MaterialProvider>
+      <LanguageProvider>
+        <MaterialProvider>
+          <CustomStyledProvider cache={clientSideEmotionCache}>
+            <Head>
+              <meta charSet="utf-8" />
+              <meta
+                name="viewport"
+                content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+              />
+            </Head>
+            <Layout {...pageProps}>
+              <Component {...pageProps} />
+            </Layout>
+          </CustomStyledProvider>
+        </MaterialProvider>
+      </LanguageProvider>
     </Provider>
   )
 }

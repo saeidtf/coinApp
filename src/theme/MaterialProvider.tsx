@@ -1,6 +1,7 @@
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles'
+import { useRouter } from 'next/router'
 import React, { ReactNode } from 'react'
 import lightTheme from './theme'
 
@@ -21,7 +22,6 @@ export const CustomStyledProvider = ({
     </StyledEngineProvider>
   )
 }
-
 
 export default function MaterialProvider(props: PropsType) {
   return (

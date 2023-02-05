@@ -1,19 +1,16 @@
+import { useLanguage } from '@/providers/LanguageProvider'
 import { ICoinsDetails, useGetCoinsDetailsQuery, useGetCoinsQuery } from '@/services/coinsApi'
 import {
-  Avatar,
   Box,
-  Pagination,
-  Skeleton,
-  Stack,
-  Table,
+  Pagination, Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  TextField,
-  Typography,
+  TextField
 } from '@mui/material'
 import { useEffect, useState } from 'react'
+import TableItem from './components/TableItem'
 
 const debounce = (fn: any, ms: number) => {
   let timeoutId: any
@@ -25,11 +22,13 @@ const debounce = (fn: any, ms: number) => {
 
 export default function Home() {
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(25)
+  const [pageSize, setPageSize] = useState(15)
   const [search, setSearch] = useState('')
   const [coins, setCoins] = useState<ICoinsDetails[]>([])
   const [totalSize, setTotalSize] = useState(250)
 
+  const {translate} =  useLanguage()
+ 
   const { data: coinsName } = useGetCoinsQuery()
   const { data: coinsDetail, isFetching } = useGetCoinsDetailsQuery({
     page: 1,
@@ -55,49 +54,39 @@ export default function Home() {
     setSearch(e.target.value)
   }, 500)
 
+
+
+
   if (isFetching) return <div>Loading ....</div>
 
   return (
     <Box>
       <Box my={4}>
-        <TextField onChange={handleSearch} label="search" size="small" fullWidth />
+        <TextField onChange={handleSearch} label={translate('search')} size="small" fullWidth />
       </Box>
-      <Table>
+      <Table sx={{direction:'ltr'}}>
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>
-            <TableCell>COIN</TableCell>
-            <TableCell>PRICE ($)</TableCell>
-            <TableCell>MARKET CAP</TableCell>
-            <TableCell>TOTAL VOLUME</TableCell>
-            <TableCell>CIRCULATING SUPPLY</TableCell>
+            <TableCell>{translate('coin')}</TableCell>
+            <TableCell>{translate('price')}</TableCell>
+            <TableCell>{translate('24H')}</TableCell>
+            <TableCell>{translate('marketCap')}</TableCell>
+            <TableCell>{translate('totalVolume')}</TableCell>
+            <TableCell>{translate('circulatingSupply')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {coins?.map((coin) => {
             return (
-              <TableRow key={coin.id}>
-                <TableCell>{coin.market_cap_rank}</TableCell>
-                <TableCell>
-                  <Stack spacing={4} alignItems="center" direction="row">
-                    <Avatar src={coin.image} alt={coin.name} sx={{ width: 24, height: 24 }} />
-                    <Stack spacing={1}>
-                      <Typography variant="subtitle1">{coin.name}</Typography>
-                      <Typography variant="subtitle2">{coin.symbol}</Typography>
-                    </Stack>
-                  </Stack>
-                </TableCell>
-                <TableCell>{coin.current_price.toLocaleString()}</TableCell>
-                <TableCell>{coin.market_cap.toLocaleString()}</TableCell>
-                <TableCell>{coin.total_volume.toLocaleString()}</TableCell>
-                <TableCell>{`${coin.circulating_supply} ${coin.symbol.toUpperCase()}`}</TableCell>
-              </TableRow>
+              <TableItem coin={coin} key={coin.id} />
             )
           })}
         </TableBody>
       </Table>
       <Box my={2}>
         <Pagination
+          sx={{direction:'ltr'}}
           count={Math.ceil(totalSize / pageSize)}
           page={page}
           onChange={(e, page) => setPage(page)}

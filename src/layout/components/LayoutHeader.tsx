@@ -1,3 +1,4 @@
+import { useLanguage } from '@/providers/LanguageProvider'
 import {
   AppBar,
   Avatar,
@@ -13,30 +14,46 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
+import { log } from 'console'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { useState } from 'react'
 import { HiMenu } from 'react-icons/hi'
 import HideOnScroll from './HideOnScroll'
 
-const links = [
-  { to: '/', label: 'Home' },
-  { to: '/contact', label: 'Contact' },
-  { to: '/about', label: 'About' },
-]
-
 export default function LayoutHeader() {
   const [openMenu, setOpenMenu] = useState(false)
+
+  const {translate} = useLanguage()
+
+  const links = [
+    { to: '/', label: translate('home') },
+    { to: '/contact', label: translate('contact') },
+    { to: '/about', label: translate('about') },
+  ]
+
+  const { locale, push, pathname } = useRouter()
+  const isRtl = locale === 'fa'
+  
+
+  const handleChangeLocal = () => {
+    push(pathname, pathname, { locale: !isRtl ? 'fa' : 'en' })
+  }
 
   return (
     <>
       <HideOnScroll>
-        <AppBar color="primary" component={'nav'} sx={{ flexShrink: 0 }}>
+        <AppBar
+          color="primary"
+          component={'nav'}
+          sx={{ flexShrink: 0 , direction:"ltr" }}
+        >
           <Toolbar>
             <Stack
               direction="row"
               alignItems="center"
-              spacing={1}
+              spacing={2}
               sx={{
                 width: {
                   xs: '100%',
@@ -58,9 +75,16 @@ export default function LayoutHeader() {
               >
                 <Link href="/">
                   <Typography variant="h6" textAlign={'center'}>
-                    Mofid Crypto
+                    {translate('appTitle')}
                   </Typography>
                 </Link>
+              </Box>
+              <Box>
+                <IconButton onClick={handleChangeLocal}>
+                  <Avatar sx={{ width: 30, height: 30 }}>
+                    <Typography variant="button">{!isRtl ? 'فا' : 'En'}</Typography>
+                  </Avatar>
+                </IconButton>
               </Box>
             </Stack>
             <Box sx={{ flexGrow: 1 }} />
