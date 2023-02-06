@@ -17,7 +17,7 @@ function useCustomTheme() {
       borderRadius: 4,
     },
     typography: {
-      fontFamily: [isRTL ? 'tahoma' : 'Roboto', 'Helvetica', 'Arial', 'sans-serif'].join(','),
+      fontFamily: [isRTL ? 'vazir' : 'Roboto', 'Helvetica', 'Arial', 'sans-serif'].join(','),
     },
     components: {
       MuiAppBar: {
