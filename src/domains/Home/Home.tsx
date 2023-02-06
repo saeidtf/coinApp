@@ -1,4 +1,4 @@
-import { useLanguage } from '@/providers/LanguageProvider'
+import { useAppearance } from '@/providers/AppearanceProvider'
 import { ICoinsDetails, useGetCoinsDetailsQuery, useGetCoinsQuery } from '@/services/coinsApi'
 import {
   Box,
@@ -27,7 +27,7 @@ export default function Home() {
   const [coins, setCoins] = useState<ICoinsDetails[]>([])
   const [totalSize, setTotalSize] = useState(250)
 
-  const {translate} =  useLanguage()
+  const {translate} =  useAppearance()
  
   const { data: coinsName } = useGetCoinsQuery()
   const { data: coinsDetail, isFetching } = useGetCoinsDetailsQuery({

@@ -1,9 +1,8 @@
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles'
-import { useRouter } from 'next/router'
 import React, { ReactNode } from 'react'
-import lightTheme from './theme'
+import useCustomTheme from './useCustomTheme'
 
 type PropsType = {
   children: React.ReactNode
@@ -24,6 +23,7 @@ export const CustomStyledProvider = ({
 }
 
 export default function MaterialProvider(props: PropsType) {
+  const lightTheme = useCustomTheme()
   return (
     <ThemeProvider theme={lightTheme}>
       <CssBaseline />

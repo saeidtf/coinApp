@@ -1,4 +1,4 @@
-import { useLanguage } from '@/providers/LanguageProvider'
+import { useAppearance } from '@/providers/AppearanceProvider'
 import {
   AppBar,
   Avatar,
@@ -20,12 +20,14 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { useState } from 'react'
 import { HiMenu } from 'react-icons/hi'
+import { BsMoonStars, BsSun } from 'react-icons/bs'
+
 import HideOnScroll from './HideOnScroll'
 
 export default function LayoutHeader() {
   const [openMenu, setOpenMenu] = useState(false)
 
-  const {translate} = useLanguage()
+  const { translate, themeMode, setThemeMode } = useAppearance()
 
   const links = [
     { to: '/', label: translate('home') },
@@ -35,20 +37,19 @@ export default function LayoutHeader() {
 
   const { locale, push, pathname } = useRouter()
   const isRtl = locale === 'fa'
-  
 
   const handleChangeLocal = () => {
     push(pathname, pathname, { locale: !isRtl ? 'fa' : 'en' })
   }
 
+  const handleChangeMode = () => {
+    setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+  }
+
   return (
     <>
       <HideOnScroll>
-        <AppBar
-          color="primary"
-          component={'nav'}
-          sx={{ flexShrink: 0 , direction:"ltr" }}
-        >
+        <AppBar color="primary" component={'nav'} sx={{ flexShrink: 0, direction: 'ltr' }}>
           <Toolbar>
             <Stack
               direction="row"
@@ -82,8 +83,13 @@ export default function LayoutHeader() {
               <Box>
                 <IconButton onClick={handleChangeLocal}>
                   <Avatar sx={{ width: 30, height: 30 }}>
-                    <Typography variant="button">{!isRtl ? 'فا' : 'En'}</Typography>
+                    <Typography variant="button">{!isRtl ? 'Fa' : 'En'}</Typography>
                   </Avatar>
+                </IconButton>
+              </Box>
+              <Box>
+                <IconButton color="inherit" onClick={handleChangeMode}>
+                  {themeMode === 'light' ? <BsMoonStars size={24} /> : <BsSun size={24} />}
                 </IconButton>
               </Box>
             </Stack>
