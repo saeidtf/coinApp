@@ -108,9 +108,9 @@ export default function LayoutHeader() {
         open={openMenu}
         onClose={() => setOpenMenu(false)}
         onOpen={() => setOpenMenu(true)}
-        anchor="left"
+        anchor="left"      
       >
-        <Box width={300} height="100vh" textAlign="center" role="presentation">
+        <Box width={300} height="100vh" sx={{direction:'ltr'}} role="presentation">
           <Stack spacing={4} mt={4}>
             <Avatar sx={{ width: 100, height: 100, m: 'auto' }} />
             <Divider />
