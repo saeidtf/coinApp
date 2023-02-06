@@ -81,7 +81,10 @@ export default function Home() {
         <Autocomplete
           value={vsCurrency}
           onChange={(e, value) => setVsCurrency(value || '')}
-          sx={{ width: 250 }}
+          sx={{ width: {
+            xs: '100%',
+            md: 250,
+          } }}
           size="small"
           options={coinsName || []}
           getOptionLabel={(option) => option}
