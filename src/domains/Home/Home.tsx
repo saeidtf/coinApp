@@ -1,12 +1,10 @@
 import { useAppearance } from '@/providers/AppearanceProvider'
-import { ICoinsDetails, useGetCoinsDetailsQuery, useGetCoinsQuery } from '@/services/coinsApi'
 import {
   Autocomplete,
   Box,
   MenuItem,
   Pagination,
   Select,
-  SelectChangeEvent,
   Stack,
   Table,
   TableBody,
@@ -15,57 +13,25 @@ import {
   TableRow,
   TextField,
 } from '@mui/material'
-import { ReactNode, useEffect, useState } from 'react'
 import TableItem from './components/TableItem'
-
-const debounce = (fn: any, ms: number) => {
-  let timeoutId: any
-  return (...args: any) => {
-    clearTimeout(timeoutId)
-    timeoutId = setTimeout(() => fn(...args), ms)
-  }
-}
+import useHomePage from './useHomePage'
 
 export default function Home() {
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
-  const [search, setSearch] = useState('')
-  const [coins, setCoins] = useState<ICoinsDetails[]>([])
-  const [totalSize, setTotalSize] = useState(250)
-  const [vsCurrency, setVsCurrency] = useState('usd')
-
   const { translate } = useAppearance()
 
-  const { data: coinsName } = useGetCoinsQuery()
-  const { data: coinsDetail, isFetching } = useGetCoinsDetailsQuery({
-    page: 1,
-    pageSize: 250,
+  const {
+    page,
+    setPage,
+    pageSize,        
+    coins,
+    coinsName,
+    totalSize,    
     vsCurrency,
-  })
-
-  useEffect(() => {
-    if (coinsDetail) {
-      const searchCoins = coinsDetail.filter((coin) => {
-        return coin.name.toLowerCase().includes(search.toLowerCase())
-      })
-
-      setTotalSize(searchCoins.length)
-
-      const start = (page - 1) * pageSize
-      const end = start + pageSize
-      setCoins(searchCoins.slice(start, end))
-    }
-  }, [coinsDetail, page, search, pageSize])
-
-  const handleSearch = debounce((e: any) => {
-    setPage(1)
-    setSearch(e.target.value)
-  }, 500)
-
-  const handlePageSize = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    setPage(1)
-    setPageSize(+e.target.value)
-  }
+    setVsCurrency,
+    handleSearch,
+    handlePageSize,
+    isFetching,
+  } = useHomePage()
 
   return (
     <Box>
@@ -81,10 +47,12 @@ export default function Home() {
         <Autocomplete
           value={vsCurrency}
           onChange={(e, value) => setVsCurrency(value || '')}
-          sx={{ width: {
-            xs: '100%',
-            md: 250,
-          } }}
+          sx={{
+            width: {
+              xs: '100%',
+              md: 250,
+            },
+          }}
           size="small"
           options={coinsName || []}
           getOptionLabel={(option) => option}
@@ -92,9 +60,8 @@ export default function Home() {
         />
       </Stack>
       {isFetching && <Box>{translate('loading')}</Box>}
-      {!isFetching && !coinsDetail && <Box>{translate('noData')}</Box>}
-      {!isFetching && coinsDetail && coins.length === 0 && <Box>{translate('noData')}</Box>}
-      {!isFetching && coinsDetail && coins.length>0 && (
+      {!isFetching && coins.length === 0 && <Box>{translate('noData')}</Box>}
+      {!isFetching && coins.length > 0 && (
         <Box>
           <Box sx={{ overflowX: 'auto' }}>
             <Table sx={{ direction: 'ltr', minWidth: 700 }}>
@@ -152,5 +119,5 @@ export default function Home() {
         </Box>
       )}
     </Box>
-  ) 
+  )
 }
