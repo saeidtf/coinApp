@@ -11,7 +11,7 @@ const ChangeValue = ({ value }: { value: number }) => {
       color={isUp ? 'success.main' : 'error.main'}
     >
       {isUp ? <MdOutlineKeyboardArrowUp /> : <MdOutlineKeyboardArrowDown />}
-      <Typography variant="body1">{value}</Typography>
+      <Typography variant="body1">{value?value.toFixed(4):value}</Typography>
     </Stack>
   )
 }

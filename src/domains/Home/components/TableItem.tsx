@@ -28,6 +28,9 @@ export default function TableItem({coin}:TableItemType) {
         <ChangeValue value={coin.market_cap_change_percentage_24h} />{' '}
       </TableCell>
       <TableCell>
+        <ChangeValue value={coin.price_change_percentage_7d_in_currency} />{' '}
+      </TableCell>
+      <TableCell>
         <Separator value={coin.market_cap} />
       </TableCell>
       <TableCell>

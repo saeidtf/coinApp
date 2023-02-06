@@ -1,13 +1,18 @@
 {
-    "appTitle":"Mofid Crypto",
+    "appTitle":"Crypto App",
     "home":"Home",
     "about":"About",
     "contact":"Contact",
     "coin":"Coin",
     "price":"Price",
     "24H":"24H",
+    "7D":"7D",
     "marketCap":"Market Cap",
     "totalVolume":"Total Volume",
     "circulatingSupply":"Circulating Supply",
-    "search":"Search"
+    "search":"Search",
+    "copyRight":"© 2023 Crypto App. All Rights Reserved.",
+    "pageSize":"Page Size",
+    "aboutPageTitle":"About Crypto App",
+    "contactPageTitle":"Contact Crypto App"
 }

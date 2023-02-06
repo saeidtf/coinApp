@@ -6,8 +6,13 @@
     "coin":"عنوان",
     "price":"قیمت",
     "24H":"24 ساعت",
+    "7D":"7 روز",
     "marketCap":"بازار سرمایه",
     "totalVolume":"حجم کل",
     "circulatingSupply":"توزیع",
-    "search":"جستجو"
+    "search":"جستجو",
+    "copyRight":"© 1401 تمامی حقوق برای ارزهای دیجیتال محفوظ است.",
+    "pageSize":"تعداد نمایش",
+    "aboutPageTitle":"درباره ارزهای دیجیتال",
+    "contactPageTitle":"تماس با ما"
 }

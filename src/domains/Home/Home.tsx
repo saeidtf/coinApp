@@ -2,14 +2,19 @@ import { useAppearance } from '@/providers/AppearanceProvider'
 import { ICoinsDetails, useGetCoinsDetailsQuery, useGetCoinsQuery } from '@/services/coinsApi'
 import {
   Box,
-  Pagination, Table,
+  MenuItem,
+  Pagination,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  TextField
+  TextField,
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import TableItem from './components/TableItem'
 
 const debounce = (fn: any, ms: number) => {
@@ -22,13 +27,13 @@ const debounce = (fn: any, ms: number) => {
 
 export default function Home() {
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(15)
+  const [pageSize, setPageSize] = useState(10)
   const [search, setSearch] = useState('')
   const [coins, setCoins] = useState<ICoinsDetails[]>([])
   const [totalSize, setTotalSize] = useState(250)
 
-  const {translate} =  useAppearance()
- 
+  const { translate } = useAppearance()
+
   const { data: coinsName } = useGetCoinsQuery()
   const { data: coinsDetail, isFetching } = useGetCoinsDetailsQuery({
     page: 1,
@@ -45,7 +50,7 @@ export default function Home() {
 
       const start = (page - 1) * pageSize
       const end = start + pageSize
-      setCoins(searchCoins.slice(start, end))
+      setCoins(searchCoins.slice(start, end))      
     }
   }, [coinsDetail, page, search, pageSize])
 
@@ -54,45 +59,71 @@ export default function Home() {
     setSearch(e.target.value)
   }, 500)
 
-
-
+  const handlePageSize = (e: SelectChangeEvent<number>, child: ReactNode) => {
+    setPage(1)
+    setPageSize(+e.target.value)
+  }
 
   if (isFetching) return <div>Loading ....</div>
 
   return (
     <Box>
-      <Box my={4}>
+      <Box my={4} sx={{ direction: 'ltr' }}>
         <TextField onChange={handleSearch} label={translate('search')} size="small" fullWidth />
       </Box>
-      <Table sx={{direction:'ltr'}}>
-        <TableHead>
-          <TableRow>
-            <TableCell>#</TableCell>
-            <TableCell>{translate('coin')}</TableCell>
-            <TableCell>{translate('price')}</TableCell>
-            <TableCell>{translate('24H')}</TableCell>
-            <TableCell>{translate('marketCap')}</TableCell>
-            <TableCell>{translate('totalVolume')}</TableCell>
-            <TableCell>{translate('circulatingSupply')}</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {coins?.map((coin) => {
-            return (
-              <TableItem coin={coin} key={coin.id} />
-            )
-          })}
-        </TableBody>
-      </Table>
-      <Box my={2}>
+      <Box sx={{ overflowX: 'auto' }}>
+        <Table sx={{ direction: 'ltr', minWidth: 700 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>{translate('coin')}</TableCell>
+              <TableCell>{translate('price')}</TableCell>
+              <TableCell>{translate('24H')}</TableCell>
+              <TableCell>{translate('7D')}</TableCell>
+              <TableCell>{translate('marketCap')}</TableCell>
+              <TableCell>{translate('totalVolume')}</TableCell>
+              <TableCell>{translate('circulatingSupply')}</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {coins?.map((coin) => {
+              return <TableItem coin={coin} key={coin.id} />
+            })}
+          </TableBody>
+        </Table>
+      </Box>
+      <Stack
+        my={2}
+        spacing={2}
+        direction={{
+          xs: 'column',
+          md: 'row',
+        }}
+      >
         <Pagination
-          sx={{direction:'ltr'}}
+          sx={{ direction: 'ltr' }}
           count={Math.ceil(totalSize / pageSize)}
           page={page}
           onChange={(e, page) => setPage(page)}
           color="primary"
         />
-      </Box>
+        <Select          
+          size="small"
+          value={pageSize}
+          onChange={handlePageSize}
+          sx={{
+            width: {
+              xs: '100%',
+              md: 100,
+            },
+          }}
+        >
+          <MenuItem value={10}>10</MenuItem>
+          <MenuItem value={20}>20</MenuItem>
+          <MenuItem value={50}>50</MenuItem>
+          <MenuItem value={100}>100</MenuItem>
+        </Select>
+      </Stack>
     </Box>
   )
 }

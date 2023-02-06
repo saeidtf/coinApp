@@ -1,6 +1,38 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import baseQuery from '../redux/baseQuery'
 
+export const coinsApi = createApi({
+  reducerPath: 'coinsApi',
+  baseQuery: baseQuery,
+  endpoints: (builder) => ({
+    getCoins: builder.query<string[], void>({
+      query: () => 'simple/supported_vs_currencies',
+    }),
+    getCoinsDetails: builder.query<ICoinsDetails[], ICoinsArgs>({
+      query: ({
+        page = 1,
+        pageSize = 20,
+      }) => ({
+        url: 'coins/markets',
+        params: {
+          vs_currency : "usd",
+          page,
+          per_page : pageSize,
+          price_change_percentage : '24h,7d',
+        },
+      }),
+    }),
+  }),
+})
+
+export const {
+  useGetCoinsQuery,
+  useGetCoinsDetailsQuery,
+  useLazyGetCoinsDetailsQuery,
+  useLazyGetCoinsQuery,
+} = coinsApi
+
+
 export interface ICoinsDetails {
   id: string
   symbol: string
@@ -42,34 +74,3 @@ export interface ICoinsArgs {
   page?: number
   pageSize?: number
 }
-
-export const coinsApi = createApi({
-  reducerPath: 'coinsApi',
-  baseQuery: baseQuery,
-  endpoints: (builder) => ({
-    getCoins: builder.query<string[], void>({
-      query: () => 'simple/supported_vs_currencies',
-    }),
-    getCoinsDetails: builder.query<ICoinsDetails[], ICoinsArgs>({
-      query: ({
-        page = 1,
-        pageSize = 20,
-      }) => ({
-        url: 'coins/markets',
-        params: {
-          vs_currency : "usd",
-          page,
-          per_page : pageSize,
-          price_change_percentage : '24h,7d',
-        },
-      }),
-    }),
-  }),
-})
-
-export const {
-  useGetCoinsQuery,
-  useGetCoinsDetailsQuery,
-  useLazyGetCoinsDetailsQuery,
-  useLazyGetCoinsQuery,
-} = coinsApi
