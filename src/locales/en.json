@@ -14,5 +14,8 @@
     "copyRight":"© 2023 Crypto App. All Rights Reserved.",
     "pageSize":"Page Size",
     "aboutPageTitle":"About Crypto App",
-    "contactPageTitle":"Contact Crypto App"
+    "contactPageTitle":"Contact Crypto App",
+    "vsCurrency":"vs Currency",
+    "loading":"Loading...",
+    "noData":"No Data"
 }

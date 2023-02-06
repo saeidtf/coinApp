@@ -11,11 +11,12 @@ export const coinsApi = createApi({
     getCoinsDetails: builder.query<ICoinsDetails[], ICoinsArgs>({
       query: ({
         page = 1,
-        pageSize = 20,
+        pageSize = 10,
+        vsCurrency = 'usd',
       }) => ({
         url: 'coins/markets',
         params: {
-          vs_currency : "usd",
+          vs_currency : vsCurrency,
           page,
           per_page : pageSize,
           price_change_percentage : '24h,7d',
@@ -73,4 +74,5 @@ export interface Roi {
 export interface ICoinsArgs {
   page?: number
   pageSize?: number
+  vsCurrency?: string
 }
