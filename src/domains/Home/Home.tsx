@@ -31,6 +31,7 @@ export default function Home() {
     handleSearch,
     handlePageSize,
     isFetching,
+    error
   } = useHomePage()
 
   return (
@@ -61,6 +62,7 @@ export default function Home() {
       </Stack>
       {isFetching && <Box>{translate('loading')}</Box>}
       {!isFetching && coins.length === 0 && <Box>{translate('noData')}</Box>}
+      {error && <Box>{JSON.stringify(error || {}, null, 2)}</Box>}
       {!isFetching && coins.length > 0 && (
         <Box>
           <Box sx={{ overflowX: 'auto' }}>

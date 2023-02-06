@@ -11,7 +11,7 @@ export default function useHomePage() {
   const [vsCurrency, setVsCurrency] = useState('usd')
 
   const { data: coinsName } = useGetCoinsQuery()
-  const { data: coinsDetail, isFetching } = useGetCoinsDetailsQuery({
+  const { data: coinsDetail, isFetching , error } = useGetCoinsDetailsQuery({
     page: 1,
     pageSize: 250,
     vsCurrency,
@@ -63,5 +63,6 @@ export default function useHomePage() {
     handleSearch,
     handlePageSize,
     isFetching,
+    error
   }
 }
